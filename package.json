@@ -1,0 +1,20 @@
+{
+  "name": "d3fender",
+  "version": "0.1.0",
+  "description": "a game about resource management & battle",
+  "main": "index.js",
+  "scripts": {
+    "build": "browserify src/index.js -o dist/build.js -v",
+    "dev": "watchify src/index.js -o dist/build.js -v"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "vue": "^1.0.26"
+  },
+  "devDependencies": {
+    "browserify": "^13.1.0",
+    "watchify": "^3.7.0"
+  }
+}

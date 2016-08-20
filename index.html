@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>d3fender</title>
+  </head>
+  <body>
+    <header>
+      <h1>d3fender</h1>
+    </header>
+
+    <div id="game"></div>
+
+    <template id="game-template">
+      <div class="wrapper">
+        <p>Ticks: {{ticks}}</p>
+        <p v-for="house in houses">
+          <span>{{house.name}}: {{house.count}}x ({{house.working}} working)</span>
+          <button type="button" @click="build(house.name)">++</button>
+        </p>
+        <p>
+          <div v-for="res in resources">{{$key}}: {{ res | round }}</div>
+        </p>
+
+      </div>
+    </template>
+
+    <!--<div class="houses">
+      <ul>
+        <li class="bakery">
+          Bakery: <span></span>
+        </li>
+      </ul>
+    </div>
+    <div class="resources">
+      <ul>
+        <li class="bread">Bread: <span></span></li>
+      </ul>
+    </div>-->
+    <script src="dist/build.js" charset="utf-8"></script>
+
+  </body>
+</html>
