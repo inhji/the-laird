@@ -1,20 +1,25 @@
 {
-  "name": "d3fender",
+  "name": "the-liard",
   "version": "0.1.0",
-  "description": "a game about resource management & battle",
-  "main": "index.js",
-  "scripts": {
-    "build": "browserify src/index.js -o dist/build.js -v",
-    "dev": "watchify src/index.js -o dist/build.js -v"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "private": true,
   "dependencies": {
-    "vue": "^1.0.26"
+    "lodash": "^4.17.5",
+    "mobx": "^4.1.1",
+    "mobx-react": "^5.0.0",
+    "react": "^16.3.1",
+    "react-dom": "^16.3.1",
+    "react-scripts": "1.1.4"
+  },
+  "scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test --env=jsdom",
+    "eject": "react-app-rewired eject"
   },
   "devDependencies": {
-    "browserify": "^13.1.0",
-    "watchify": "^3.7.0"
+    "babel-preset-mobx": "^1.0.2",
+    "prettier": "^1.12.0",
+    "react-app-rewire-mobx": "^1.0.8",
+    "react-app-rewired": "^1.5.0"
   }
 }
