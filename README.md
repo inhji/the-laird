@@ -1,4 +1,4 @@
-# The Liard
+# The Laird
 
 ## Build, produce and grow! But don't piss off the landlord!
 
@@ -17,7 +17,7 @@
 * [ ] natural disasters
 * [ ] random events
 * [x] add money
-* [ ] the liard!
+* [ ] the laird!
 
 ### the laird/landlord
 
