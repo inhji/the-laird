@@ -1,5 +1,6 @@
-# d3fender
-## a game about resource management & battle
+# The Liard
+
+## Build, produce and grow! But don't piss off the landlord!
 
 ### features
 
@@ -24,17 +25,19 @@
 * if you get too rich, he will get greedy and send soldiers
 
 ### battle
+
 battles are won by outnumbering enemy
 wounded (some % of all soldiers depending on outcome) have to be treated, costs money and food
 won battles produce money and slaves
 
 ### economy
+
 smaller version of siedler 2 economy
 lots of buildings that produce lots of goods which are processed 1 or more times
 
 ### goal
-produce material to build spaceship/rocket/ to escape
 
+produce material to build spaceship/rocket/ to escape
 
 ### dev stuff
 
