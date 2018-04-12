@@ -9,14 +9,15 @@
 
 ### roadmap
 
-* nicer GUI
-* more houses
-* population
-* battles
-* progression
-* natural disasters
-* random events
-* add money!
+* [ ] nicer GUI
+* [ ] more houses
+* [ ] population
+* [ ] battles
+* [ ] progression
+* [ ] natural disasters
+* [ ] random events
+* [x] add money
+* [ ] the liard!
 
 ### the laird/landlord
 
