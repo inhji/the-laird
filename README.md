@@ -17,6 +17,12 @@
 * random events
 * add money!
 
+### the laird/landlord
+
+* you can take loans from him
+* if you don't pay back your loans, he will be pissed and send soldiers
+* if you get too rich, he will get greedy and send soldiers
+
 ### battle
 battles are won by outnumbering enemy
 wounded (some % of all soldiers depending on outcome) have to be treated, costs money and food
