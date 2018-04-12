@@ -46,7 +46,7 @@ produce material to build spaceship/rocket/ to escape
 
 ```
 npm install
-npm run dev
+npm start
 ```
 
 #### build
