@@ -2,6 +2,11 @@ import React, { Component } from 'react'
 import { observer } from 'mobx-react'
 import _ from 'lodash'
 import { requestGameLoop, store } from './gameloop'
+
+import Houses from './components/Houses'
+import Resources from './components/Resources'
+import BuildQueue from './components/BuildQueue'
+
 import './App.css'
 
 @observer
@@ -15,36 +20,29 @@ class App extends Component {
 			return <div>loading..</div>
 		}
 
-		const { ticks, houses, resources } = store.state
+		const { ticks, houses, resources, buildQueue } = store.state
 
 		return (
 			<div>
-				<div>Ticks: {ticks}</div>
-				<div>
-					{houses.map(house => (
-						<div key={house.name}>
-							<div>
-								{house.name}: {house.count}x ({house.working} working)
-							</div>
-							<button
-								onClick={e => {
-									e.preventDefault()
-									store.build(house.name)
-								}}
-							>
-								Build one
-							</button>
-						</div>
-					))}
-				</div>
+				<section className="section">
+					<div className="container">
+						<div>Ticks: {ticks}</div>
 
-				<div>
-					{_.map(resources, (value, resource) => (
-						<div key={resource}>
-							{resource}: {Math.round(value)}
+						<div className="columns">
+							<div className="column is-one-third">
+								<Houses houses={houses} build={store.build} />
+							</div>
+
+							<div className="column is-one-third">
+								<Resources resources={resources} />
+							</div>
+
+							<div className="column is-one-third">
+								<BuildQueue queue={buildQueue} isEmpty={store.queueEmpty} />
+							</div>
 						</div>
-					))}
-				</div>
+					</div>
+				</section>
 
 				<pre>{JSON.stringify(store.state, null, 3)}</pre>
 			</div>
