@@ -1,6 +1,6 @@
-import AppStore from './AppStore'
+import Store from './Store'
 
-export const store = new AppStore()
+export const store = new Store()
 
 const gameLoop = () => {
 	store.update()
@@ -10,4 +10,3 @@ const gameLoop = () => {
 export const requestGameLoop = () => {
 	window.requestAnimationFrame(gameLoop)
 }
-

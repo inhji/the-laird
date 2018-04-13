@@ -1,10 +1,12 @@
-import { observable } from 'mobx'
+import { action, configure, observable, computed } from 'mobx'
 import _ from 'lodash'
+
+configure({ enforceActions: true })
 
 const BASE_PRODUCTION = 0.025
 const BASE_BUILD_SPEED = 0.25
 
-export default class AppStore {
+export default class Store {
 	@observable
 	state = {
 		ticks: 0,
@@ -12,7 +14,8 @@ export default class AppStore {
 			bread: 0,
 			crop: 0,
 			water: 0,
-			wood: 0,
+			wood: 30,
+			stone: 30,
 			gold: 100
 		},
 		buildQueue: [],
@@ -21,10 +24,27 @@ export default class AppStore {
 				name: 'logger',
 				count: 0,
 				cost: {
-					gold: 10
+					gold: 10,
+					wood: 10,
+					stone: 10
 				},
 				produced: 0,
 				produces: 'wood',
+				working: 0,
+				base: BASE_PRODUCTION,
+				consumes: null,
+				modifiers: []
+			},
+			{
+				name: 'quarry',
+				count: 0,
+				cost: {
+					gold: 10,
+					wood: 10,
+					stone: 10
+				},
+				produced: 0,
+				produces: 'stone',
 				working: 0,
 				base: BASE_PRODUCTION,
 				consumes: null,
@@ -78,26 +98,61 @@ export default class AppStore {
 		]
 	}
 
-	update() {
-		this.state.ticks++
-
-		this.state.houses = this.updateHouses(this.state)
-		this.state.buildQueue = this.updateBuildQueue(this.state)
+	@computed
+	get queueEmpty() {
+		return this.state.buildQueue.length === 0
 	}
 
+	@action.bound
+	tick() {
+		this.state.ticks++
+	}
+
+	update() {
+		this.tick()
+
+		this.updateState('houses', this.updateHouses(this.state))
+		this.updateState('buildQueue', this.updateBuildQueue(this.state))
+	}
+
+	@action
+	updateState(key, value) {
+		this.state[key] = value
+	}
+
+	canBuild({ cost }) {
+		return Object.entries(cost).every(([type, amount]) => {
+			return this.state.resources[type] >= amount
+		})
+	}
+
+	@action.bound
 	build(name) {
-		const houseIndex = _.findIndex(this.state.houses, h => h.name === name)
-		const newHouse = {
+		const house = this.findHouseByName(name)
+
+		if (this.canBuild(house)) {
+			_.forEach(house.cost, (amount, type) => this.pay(type, amount))
+
+			this.addToBuildQueue(name)
+		} else {
+			alert('you dont have enough resources')
+		}
+	}
+
+	@action
+	addToBuildQueue(name) {
+		this.state.buildQueue.push({
 			name,
 			percent: 0
-		}
-
-		this.state.resources.gold -= this.state.houses[houseIndex].cost.gold
-		this.state.buildQueue.push(newHouse)
-
-		//this.state.houses[houseIndex].count++
+		})
 	}
 
+	@action
+	pay(type, amount) {
+		this.state.resources[type] -= amount
+	}
+
+	@action
 	updateBuildQueue(state) {
 		return state.buildQueue
 			.map(item => {
@@ -109,14 +164,15 @@ export default class AppStore {
 				const done = item.percent > 100
 
 				if (done) {
-					const houseIndex = _.findIndex(state.houses, h => h.name === item.name)
-					this.state.houses[houseIndex].count++
+					const house = this.findHouseByName(item.name)
+					house.count++
 				}
 
 				return !done
 			})
 	}
 
+	@action
 	updateHouses(state) {
 		return state.houses.map(house => {
 			const houseProduced = this.calcProduced(house, state.resources)
@@ -135,6 +191,11 @@ export default class AppStore {
 
 			return house
 		})
+	}
+
+	findHouseByName(name) {
+		const i = _.findIndex(this.state.houses, h => h.name === name)
+		return this.state.houses[i]
 	}
 
 	calcModifier(modifiers) {
