@@ -4,13 +4,14 @@
 
 ### features
 
-* ugly GUI
+* (not so) ugly GUI
 * tiny eco system
 
 ### roadmap
 
 * [ ] nicer GUI
-* [ ] more houses
+* [ ] pixel art interface :heart_eyes_cat:
+* [ ] more buildings
 * [ ] population
 * [ ] battles
 * [ ] progression
@@ -33,12 +34,13 @@ won battles produce money and slaves
 
 ### economy
 
-smaller version of siedler 2 economy
-lots of buildings that produce lots of goods which are processed 1 or more times
+* smaller version of _settlers 2_ economy
+* lots of buildings that produce lots of goods which are processed 1 or more times
 
-### goal
+### goal ideas
 
-produce material to build spaceship/rocket/ to escape
+* produce material to build spaceship/rocket/ to escape
+* build an army to attack the landlord
 
 ### dev stuff
 
