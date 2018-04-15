@@ -31,4 +31,8 @@ export default class House {
 		this.modifiers = modifiers
 		this.unique = unique
 	}
+
+	get productionPerSecond() {
+		return this.base * 60
+	}
 }

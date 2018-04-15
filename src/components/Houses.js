@@ -11,26 +11,31 @@ export default ({ houses, build }) => (
 			>
 				<div className="column">
 					<div>
-						{house.prettyName}: {house.count}/{house.working}
-					</div>
-					<div>
-						{_.map(house.cost, (value, resource) => (
-							<div>
-								{resource}: {value}
-							</div>
-						))}
+						<div>
+							{house.prettyName}: {house.count}/{house.working}
+						</div>
+						<div>{house.productionPerSecond}/s</div>
 					</div>
 				</div>
 				<div className="column">
 					{!house.unique && (
-						<button
-							onClick={e => {
-								e.preventDefault()
-								build(house.name)
-							}}
-						>
-							Build
-						</button>
+						<div>
+							<button
+								onClick={e => {
+									e.preventDefault()
+									build(house.name)
+								}}
+							>
+								Build
+							</button>
+							<div>
+								{_.map(house.cost, (value, resource) => (
+									<div>
+										{resource}: {value}
+									</div>
+								))}
+							</div>
+						</div>
 					)}
 				</div>
 			</div>
