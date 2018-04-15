@@ -1,6 +1,6 @@
 import { action, configure, observable, computed } from 'mobx'
 import _ from 'lodash'
-import House from './House'
+import House from './classes/House'
 
 configure({ enforceActions: true })
 
@@ -26,9 +26,9 @@ export default class Store {
 			debt: 0
 		},
 		loans: [
-			{ value: 100, modifier: 1.2, interest: 0.0001 },
-			{ value: 200, modifier: 1.15, interest: 0.00015 },
-			{ value: 500, modifier: 1.2, interest: 0.0002 }
+			{ name: 'small', value: 100, modifier: 1.2, interest: 0.0001 },
+			{ name: 'medium', value: 200, modifier: 1.15, interest: 0.00015 },
+			{ name: 'large', value: 500, modifier: 1.2, interest: 0.0002 }
 		],
 		buildQueue: [],
 		houses: [
@@ -145,6 +145,16 @@ export default class Store {
 		}
 	}
 
+	@action.bound
+	takeLoan(name) {
+		const loan = this.findLoanByName(name)
+
+		this.state.laird.debt += loan.value * loan.modifier
+		this.state.resources.gold += loan.value
+
+		this.state.messages.push(`You have taken a ${loan.name} loan of ${loan.value} gold.`)
+	}
+
 	@action
 	addToBuildQueue({ name, prettyName }) {
 		this.state.buildQueue.push({
@@ -204,6 +214,11 @@ export default class Store {
 	findHouseByName(name) {
 		const i = _.findIndex(this.state.houses, h => h.name === name)
 		return this.state.houses[i]
+	}
+
+	findLoanByName(name) {
+		const loan = _.find(this.state.loans, l => l.name === name)
+		return loan
 	}
 
 	calcModifier(modifiers) {
