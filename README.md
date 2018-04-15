@@ -46,6 +46,10 @@ won battles produce money and slaves
 * produce material to build spaceship/rocket/ to escape
 * build an army to attack the landlord
 
+### inspiration
+
+* settlers 2 (one of my favorite games in childhood)
+
 ### dev stuff
 
 #### dev mode
