@@ -6,6 +6,10 @@
 
 * (not so) ugly GUI
 * tiny eco system
+* message log
+* 6 buildings
+* loans
+* build queue
 
 ### roadmap
 
@@ -18,7 +22,7 @@
 * [ ] natural disasters
 * [ ] random events
 * [x] add money
-* [ ] the laird!
+* [x] the laird!
 
 ### the laird/landlord
 
