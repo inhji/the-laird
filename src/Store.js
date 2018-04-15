@@ -1,6 +1,7 @@
 import { action, configure, observable, computed } from 'mobx'
 import _ from 'lodash'
 import House from './classes/House'
+import Loan from './classes/Loan'
 
 configure({ enforceActions: true })
 
@@ -26,9 +27,9 @@ export default class Store {
 			debt: 0
 		},
 		loans: [
-			{ name: 'small', value: 100, modifier: 1.2, interest: 0.0001 },
-			{ name: 'medium', value: 200, modifier: 1.15, interest: 0.00015 },
-			{ name: 'large', value: 500, modifier: 1.2, interest: 0.0002 }
+			new Loan({ name: 'small', value: 100, modifier: 1.2, interest: 0.0001 }),
+			new Loan({ name: 'medium', value: 200, modifier: 1.15, interest: 0.00015 }),
+			new Loan({ name: 'large', value: 500, modifier: 1.2, interest: 0.0002 })
 		],
 		buildQueue: [],
 		houses: [
@@ -149,10 +150,28 @@ export default class Store {
 	takeLoan(name) {
 		const loan = this.findLoanByName(name)
 
-		this.state.laird.debt += loan.value * loan.modifier
+		this.state.laird.debt += loan.debt
 		this.state.resources.gold += loan.value
 
 		this.state.messages.push(`You have taken a ${loan.name} loan of ${loan.value} gold.`)
+
+		loan.take()
+	}
+
+	@action.bound
+	paybackLoan(name) {
+		const loan = this.findLoanByName(name)
+
+		if (loan.debt > this.state.resources.gold) {
+			alert('you cannot pay back this loan')
+		} else {
+			this.state.laird.debt -= loan.debt
+			this.state.resources.gold -= loan.debt
+
+			this.state.messages.push(`You payed back your ${loan.name} loan. The laird is pleased.`)
+
+			loan.payback()
+		}
 	}
 
 	@action

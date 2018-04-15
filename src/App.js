@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { observer } from 'mobx-react'
 import _ from 'lodash'
+import ms from 'ms'
 import { requestGameLoop, store } from './gameloop'
 
 import Houses from './components/Houses'
@@ -26,18 +27,24 @@ class App extends Component {
 		const { ticks, houses, resources, buildQueue, laird, loans, messages } = store.state
 
 		// Actions
-		const { build, takeLoan } = store
+		const { build, takeLoan, paybackLoan } = store
 
 		// Getters
 		const { queueEmpty } = store
 
+		const milliseconds = ticks / 60 * 1000
+		const time = ticks < 60 ? '0 seconds' : ms(milliseconds, { long: true })
+
 		return (
 			<div>
-				<pre>Console: {_.last(messages) || 'Nothing to report'}</pre>
+				<pre className="log">
+					<div>News in your Kingdom:</div>
+					<div>{_.last(messages) || 'Nothing to report'}</div>
+				</pre>
 				<section className="section">
 					<div className="container">
 						<div>
-							Ticks: {ticks}, Time: {Math.round(ticks / 60)}s
+							Ticks: {ticks}, Time: {time}
 						</div>
 
 						<div className="columns">
@@ -69,7 +76,7 @@ class App extends Component {
 								<div className="column is-one-quarter">
 									<h3 className="is-size-5">Loans</h3>
 
-									<Loans loans={loans} takeLoan={takeLoan} />
+									<Loans loans={loans} takeLoan={takeLoan} paybackLoan={paybackLoan} />
 								</div>
 							</div>
 						</div>
