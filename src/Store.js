@@ -1,5 +1,6 @@
 import { action, configure, observable, computed } from 'mobx'
 import _ from 'lodash'
+import House from './House'
 
 configure({ enforceActions: true })
 
@@ -10,6 +11,7 @@ export default class Store {
 	@observable
 	state = {
 		ticks: 0,
+		messages: [],
 		resources: {
 			bread: 0,
 			crop: 0,
@@ -18,75 +20,76 @@ export default class Store {
 			stone: 30,
 			gold: 100
 		},
+		laird: {
+			greed: 0,
+			rage: 0,
+			debt: 0
+		},
+		loans: [
+			{ value: 100, modifier: 1.2, interest: 0.0001 },
+			{ value: 200, modifier: 1.15, interest: 0.00015 },
+			{ value: 500, modifier: 1.2, interest: 0.0002 }
+		],
 		buildQueue: [],
 		houses: [
-			{
+			new House({
+				name: 'kingshall',
+				prettyName: "King's Hall",
+				count: 1,
+				base: BASE_PRODUCTION / 100,
+				produces: 'gold',
+				unique: true
+			}),
+			new House({
 				name: 'logger',
-				count: 0,
+				prettyName: 'Logger',
 				cost: {
 					gold: 10,
 					wood: 10,
 					stone: 10
 				},
-				produced: 0,
 				produces: 'wood',
-				working: 0,
-				base: BASE_PRODUCTION,
-				consumes: null,
-				modifiers: []
-			},
-			{
+				base: BASE_PRODUCTION
+			}),
+			new House({
 				name: 'quarry',
-				count: 0,
+				prettyName: 'Quarry',
 				cost: {
 					gold: 10,
 					wood: 10,
 					stone: 10
 				},
-				produced: 0,
 				produces: 'stone',
-				working: 0,
-				base: BASE_PRODUCTION,
-				consumes: null,
-				modifiers: []
-			},
-			{
+				base: BASE_PRODUCTION
+			}),
+			new House({
 				name: 'well',
-				count: 0,
+				prettyName: 'Well',
 				cost: {
 					gold: 10
 				},
-				produced: 0,
 				produces: 'water',
-				working: 0,
-				base: BASE_PRODUCTION,
-				consumes: null,
-				modifiers: []
-			},
-			{
+				base: BASE_PRODUCTION
+			}),
+			new House({
 				name: 'farm',
-				count: 0,
+				prettyName: 'Farm',
 				cost: {
 					gold: 20
 				},
-				produced: 0,
 				produces: 'crop',
-				working: 0,
 				consumes: {
 					water: 1
 				},
-				base: BASE_PRODUCTION,
-				modifiers: []
-			},
-			{
+				base: BASE_PRODUCTION
+			}),
+			new House({
 				name: 'bakery',
-				count: 0,
+				prettyName: 'Bakery',
 				cost: {
 					gold: 20
 				},
-				produced: 0,
 				produces: 'bread',
-				working: 0,
 				consumes: {
 					crop: 1,
 					water: 1,
@@ -94,7 +97,7 @@ export default class Store {
 				},
 				base: BASE_PRODUCTION,
 				modifiers: [{ name: 'apprentice', lvl: 0, value: 0 }]
-			}
+			})
 		]
 	}
 
@@ -120,7 +123,9 @@ export default class Store {
 		this.state[key] = value
 	}
 
-	canBuild({ cost }) {
+	canBuild({ cost, unique = false }) {
+		if (unique) return false
+
 		return Object.entries(cost).every(([type, amount]) => {
 			return this.state.resources[type] >= amount
 		})
@@ -133,15 +138,17 @@ export default class Store {
 		if (this.canBuild(house)) {
 			_.forEach(house.cost, (amount, type) => this.pay(type, amount))
 
-			this.addToBuildQueue(name)
+			this.addToBuildQueue(house)
+			this.state.messages.push(`Building a ${house.prettyName}`)
 		} else {
-			alert('you dont have enough resources')
+			alert('you cannnot build this')
 		}
 	}
 
 	@action
-	addToBuildQueue(name) {
+	addToBuildQueue({ name, prettyName }) {
 		this.state.buildQueue.push({
+			prettyName,
 			name,
 			percent: 0
 		})
@@ -165,6 +172,7 @@ export default class Store {
 
 				if (done) {
 					const house = this.findHouseByName(item.name)
+					this.state.messages.push(`Building ${item.prettyName} completed!`)
 					house.count++
 				}
 
