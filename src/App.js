@@ -15,6 +15,7 @@ import { WELCOME_FIRST_START } from './strings/general'
 
 import pkg from '../package.json'
 
+import '../node_modules/bulma/css/bulma.css'
 import './App.css'
 
 @observer

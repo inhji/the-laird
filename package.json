@@ -3,6 +3,7 @@
   "version": "2.0.0-alpha.2",
   "private": true,
   "dependencies": {
+    "bulma": "^0.7.0",
     "lodash": "^4.17.5",
     "mobx": "^4.1.1",
     "mobx-react": "^5.0.0",
