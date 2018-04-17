@@ -4,6 +4,6 @@ export default ({ laird }) => (
 	<div>
 		<div>Rage: {laird.rage}</div>
 		<div>Greed: {laird.greed}</div>
-		<div>Debt: {laird.debt}</div>
+		<div>Debt: {Math.round(laird.debt)}</div>
 	</div>
 )
