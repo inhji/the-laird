@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
+import Resource from './Resource'
 
 export default ({ houses, build }) => (
 	<div>
@@ -14,7 +15,7 @@ export default ({ houses, build }) => (
 						<div>
 							{house.prettyName}: {house.count}/{house.working}
 						</div>
-						<div>{house.productionPerSecond}/s</div>
+						<div>{house.isProducing && `${house.productionPerSecond}/s`}</div>
 					</div>
 				</div>
 				<div className="column">
@@ -31,7 +32,7 @@ export default ({ houses, build }) => (
 							<div>
 								{_.map(house.cost, (value, resource) => (
 									<div>
-										{resource}: {value}
+										<Resource name={resource} /> : {value}
 									</div>
 								))}
 							</div>

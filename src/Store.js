@@ -13,6 +13,9 @@ export default class Store {
 	state = {
 		ticks: 0,
 		messages: [],
+		population: {
+			settlers: 0
+		},
 		resources: {
 			bread: 0,
 			crop: 0,
@@ -27,7 +30,7 @@ export default class Store {
 			debt: 0
 		},
 		loans: [
-			new Loan({ name: 'small', value: 100, modifier: 1.2, interest: 0.0001 }),
+			new Loan({ name: 'small', value: 100, modifier: 1.1, interest: 0.0001 }),
 			new Loan({ name: 'medium', value: 200, modifier: 1.15, interest: 0.00015 }),
 			new Loan({ name: 'large', value: 500, modifier: 1.2, interest: 0.0002 })
 		],
@@ -40,6 +43,16 @@ export default class Store {
 				base: BASE_PRODUCTION / 100,
 				produces: 'gold',
 				unique: true
+			}),
+			new House({
+				prettyName: 'Settlers House',
+				name: 'settlerhouse',
+				count: 5,
+				population: 2,
+				cost: {
+					wood: 15,
+					stone: 15
+				}
 			}),
 			new House({
 				name: 'logger',
@@ -67,6 +80,7 @@ export default class Store {
 				name: 'well',
 				prettyName: 'Well',
 				cost: {
+					stone: 5,
 					gold: 10
 				},
 				produces: 'water',
@@ -76,6 +90,7 @@ export default class Store {
 				name: 'farm',
 				prettyName: 'Farm',
 				cost: {
+					wood: 30,
 					gold: 20
 				},
 				produces: 'crop',
@@ -88,6 +103,8 @@ export default class Store {
 				name: 'bakery',
 				prettyName: 'Bakery',
 				cost: {
+					wood: 20,
+					stone: 20,
 					gold: 20
 				},
 				produces: 'bread',
@@ -117,6 +134,7 @@ export default class Store {
 
 		this.updateState('houses', this.updateHouses(this.state))
 		this.updateState('buildQueue', this.updateBuildQueue(this.state))
+		this.updateState('population', this.updatePopulation(this.state))
 	}
 
 	@action
@@ -186,6 +204,21 @@ export default class Store {
 	@action
 	pay(type, amount) {
 		this.state.resources[type] -= amount
+	}
+
+	@action
+	updatePopulation(state) {
+		return {
+			settlers: state.houses.reduce((result, house) => {
+				if (house.population) {
+					result += house.population * house.count
+				} else if (!house.population && !house.unique) {
+					result -= 1 * house.count
+				}
+
+				return result
+			}, 0)
+		}
 	}
 
 	@action

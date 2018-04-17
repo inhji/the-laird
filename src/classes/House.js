@@ -8,6 +8,8 @@ export default class House {
 		prettyName = 'Add a pretty name please',
 		// Initial count of building
 		count = 0,
+		// Count of building that are producing right now
+		working = 0,
 		// Resources needed to build this building
 		cost = null,
 		// Resources Produced each tick
@@ -19,7 +21,9 @@ export default class House {
 		// Upgrades
 		modifiers = [],
 		// Unique buildings can only built once
-		unique = false
+		unique = false,
+		// Population buildings increase your population
+		population = 0
 	}) {
 		this.name = name
 		this.prettyName = prettyName
@@ -30,9 +34,14 @@ export default class House {
 		this.base = base
 		this.modifiers = modifiers
 		this.unique = unique
+		this.population = population
 	}
 
 	get productionPerSecond() {
-		return this.base * 60
+		return this.base * 60 * this.working
+	}
+
+	get isProducing() {
+		return this.productionPerSecond > 0
 	}
 }
