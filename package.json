@@ -1,6 +1,6 @@
 {
   "name": "the-liard",
-  "version": "2.0.0-alpha.1",
+  "version": "2.0.0-alpha.2",
   "private": true,
   "dependencies": {
     "lodash": "^4.17.5",
